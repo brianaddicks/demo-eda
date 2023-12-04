@@ -1,0 +1,13 @@
+webservers:
+  hosts:
+    eda-web1:
+    eda-web2:
+  vars:
+    vcenter_vm_folder: demo-eda
+    vcenter_template: template-rhel-92
+    vcenter_datacenter: acworth
+apiendpoints:
+  hosts:
+    aapcontroller:
+  vars:
+    ansible_connection: local

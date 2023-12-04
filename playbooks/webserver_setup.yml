@@ -1,0 +1,42 @@
+---
+- name: Configure webservers
+  hosts: webservers
+  gather_facts: false
+  vars:
+
+  tasks:
+    - name: Install nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+
+    - name: Start nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Copy Nginx configuration file
+      ansible.builtin.template:
+        src: ../templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify: Reload nginx
+
+    - name: Create a simple web page
+      ansible.builtin.template:
+        src: ../templates/index.html.j2
+        dest: /usr/share/nginx/html/index.html
+      notify: Reload nginx
+
+    - name: Allow port 80 through firewalld
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true
+
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded

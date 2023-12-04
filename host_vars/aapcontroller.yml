@@ -1,0 +1,45 @@
+---
+controller_components:
+  - projects
+  - credentials
+
+aap_cred: "AAP API Cred"
+ssh_cred: "SSH Cred"
+vcenter_cred: "vCenter Cred"
+
+controller_credentials:
+- name: "{{ aap_cred }}"
+  description: "{{ aap_cred }}"
+  organization: Default
+  credential_type: Red Hat Ansible Automation Platform
+  inputs:
+    host: "{{ lookup('ansible.builtin.env', 'CONTROLLER_HOST') }}"
+    password: "{{ lookup('ansible.builtin.env', 'CONTROLLER_PASSWORD') }}"
+    username: "{{ lookup('ansible.builtin.env', 'CONTROLLER_USERNAME') }}"
+    verify_ssl: "{{ lookup('ansible.builtin.env', 'CONTROLLER_VALIDATE_CERTS') | ansible.builtin.bool }}"
+- name: "{{ ssh_cred }}"
+  description: "{{ ssh_cred }}"
+  organization: Default
+  credential_type: Machine
+  inputs:
+    username: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USERNAME') }}"
+    ssh_key_data: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
+    become_method: "sudo"
+- name: "{{ vcenter_cred }}"
+  description: "{{ vcenter_cred }}"
+  organization: Default
+  credential_type: VMware vCenter
+  inputs:
+    host: "{{ lookup('ansible.builtin.env', 'VMWARE_HOST') }}"
+    password: "{{ lookup('ansible.builtin.env', 'VMWARE_PASSWORD') }}"
+    username: "{{ lookup('ansible.builtin.env', 'VMWARE_USER') }}"
+
+controller_projects:
+  - name: controller Config
+    organization: Default
+    scm_branch: master
+    scm_clean: 'no'
+    scm_delete_on_update: 'no'
+    scm_type: git
+    scm_update_on_launch: 'no'
+    scm_url: https://github.com/ansible/tower-example.git
