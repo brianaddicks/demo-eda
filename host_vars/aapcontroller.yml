@@ -76,6 +76,7 @@ controller_projects:
     scm_type: git
     scm_update_on_launch: 'no'
     scm_url: https://github.com/brianaddicks/demo-eda
+    update_project: true
 
 controller_execution_environments:
   - name: "{{ vcenter_ee }}"
