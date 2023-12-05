@@ -15,9 +15,8 @@
         state: directory
         mode: '0600'
 
-
     - name: Create SSL cert
-      template:
+      ansible.builtin.template:
         src: ../templates/sslcert.j2
         dest: /etc/haproxy/certs/{{ ssl_cert_name }}
       vars:
@@ -28,7 +27,7 @@
         - restart haproxy
 
     - name: Configure HAProxy
-      template:
+      ansible.builtin.template:
         src: ../templates/haproxy.cfg.j2
         dest: /etc/haproxy/haproxy.cfg
       notify:
@@ -36,7 +35,7 @@
 
   handlers:
     - name: restart haproxy
-      systemd:
+      ansible.builtin.service:
         name: haproxy
         state: restarted
-        enabled: yes
+        enabled: true
