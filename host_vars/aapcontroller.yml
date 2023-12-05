@@ -1,11 +1,23 @@
 ---
 controller_components:
-  - projects
   - credentials
+  - execution_environments
+  - projects
+  - inventories
+  - inventory_sources
+  - job_templates
 
 aap_cred: "AAP API Cred"
 ssh_cred: "SSH Cred"
 vcenter_cred: "vCenter Cred"
+quay_cred: "Quay"
+
+vcenter_ee: vCenter EE
+rhel_ee: RHEL EE
+aap_ee: AAP EE
+
+inventory_eda_demo: EDA Demo Inventory
+project_eda_demo: EDA Demo Project
 
 controller_credentials:
 - name: "{{ aap_cred }}"
@@ -33,13 +45,62 @@ controller_credentials:
     host: "{{ lookup('ansible.builtin.env', 'VMWARE_HOST') }}"
     password: "{{ lookup('ansible.builtin.env', 'VMWARE_PASSWORD') }}"
     username: "{{ lookup('ansible.builtin.env', 'VMWARE_USER') }}"
+- name: "{{ quay_cred }}"
+  description: "{{ quay_cred }}"
+  organization: Default
+  credential_type: Container Registry
+  inputs:
+    host: "{{ lookup('ansible.builtin.env', 'QUAY_HOST') }}"
+    password: "{{ lookup('ansible.builtin.env', 'QUAY_PASSWORD') }}"
+    username: "{{ lookup('ansible.builtin.env', 'QUAY_USERNAME') }}"
+    verify_ssl: true
+
 
 controller_projects:
-  - name: controller Config
+  - name: "{{ project_eda_demo }}"
     organization: Default
-    scm_branch: master
+    scm_branch: main
     scm_clean: 'no'
     scm_delete_on_update: 'no'
     scm_type: git
     scm_update_on_launch: 'no'
-    scm_url: https://github.com/ansible/tower-example.git
+    scm_url: https://github.com/brianaddicks/demo-eda
+
+controller_execution_environments:
+  - name: "{{ vcenter_ee }}"
+    image: quay.io/rh_ee_baddicks/vsphere-ee
+    credential: "{{ quay_cred }}"
+    pull: always
+  - name: "{{ rhel_ee }}"
+    image: quay.io/rh_ee_baddicks/rhel-90-ee
+    credential: "{{ quay_cred }}"
+    pull: always
+  - name: "{{ aap_ee }}"
+    image: quay.io/rh_ee_baddicks/ansible-controller-ee
+    credential: "{{ quay_cred }}"
+    pull: always
+
+controller_inventories:
+  - name: "{{ inventory_eda_demo }}"
+    description: "{{ inventory_eda_demo }}"
+    organization: Default
+
+controller_inventory_sources:
+  - name: EDA Demo Repo
+    source: scm
+    inventory: "{{ inventory_eda_demo }}"
+    source_path: inventory.yml
+    overwrite: true
+    update_on_launch: false
+    update_cache_timeout: 0
+    source_project: "{{ project_eda_demo }}"
+
+controller_templates:
+  - name: "Linux - Webserver Setup"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/webserver_setup.yml"
+    execution_environment: "{{ rhel_ee }}"
+    credentials:
+      - "{{ ssh_cred }}"

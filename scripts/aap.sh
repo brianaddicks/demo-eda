@@ -9,5 +9,8 @@ ansible-navigator run ../playbooks/aap_configure.yml \
   --penv VMWARE_PASSWORD \
   --penv ANSIBLE_SSH_USERNAME \
   --penv ANSIBLE_SSH_PRIVATE_KEY \
+  --penv QUAY_HOST \
+  --penv QUAY_PASSWORD \
+  --penv QUAY_USERNAME \
   -i ../inventory.yml
 #   -m stdout \

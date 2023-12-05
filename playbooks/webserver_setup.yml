@@ -2,6 +2,7 @@
 - name: Configure webservers
   hosts: webservers
   gather_facts: false
+  become: true
   vars:
 
   tasks:
