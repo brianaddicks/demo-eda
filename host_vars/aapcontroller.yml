@@ -134,7 +134,7 @@ controller_templates:
     inventory: "{{ inventory_eda_demo }}"
     project: "{{ project_eda_demo }}"
     playbook: "playbooks/oneagent_install.yml"
-    execution_environment: "{{ rhel_ee }}"
+    execution_environment: "{{ dynatrace_ee }}"
     credentials:
       - "{{ ssh_cred }}"
       - "{{ dynatrace_cred }}"
