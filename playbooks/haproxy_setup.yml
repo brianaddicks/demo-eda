@@ -9,7 +9,14 @@
         name: haproxy
         state: present
 
-    - name: Configure HAProxy
+    - name: Create cert directory
+      ansible.builtin.file:
+        path: /etc/haproxy/certs
+        state: directory
+        mode: '0600'
+
+
+    - name: Create SSL cert
       template:
         src: ../templates/sslcert.j2
         dest: /etc/haproxy/certs/{{ ssl_cert_name }}
