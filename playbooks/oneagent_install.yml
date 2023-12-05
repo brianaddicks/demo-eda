@@ -1,5 +1,6 @@
 ---
 - name: Download and install Dynatrace OneAgent
   hosts: installoneagent
+  become: true
   roles:
     - dynatrace.oneagent.oneagent
