@@ -14,12 +14,16 @@
         path: /etc/haproxy/certs
         state: directory
         mode: '0600'
+      notify:
+        - restart haproxy
 
     - name: Create run directory for socket file
       ansible.builtin.file:
         path: /run/haproxy
         state: directory
         mode: '0755'
+      notify:
+        - restart haproxy
 
     - name: Create SSL cert
       ansible.builtin.template:
