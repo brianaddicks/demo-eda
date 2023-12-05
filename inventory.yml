@@ -21,3 +21,7 @@ installoneagent:
     eda-web1:
     eda-web2:
     eda-haproxy1:
+  vars:
+    oneagent_install_args:
+      - --set-host-group=BA.eda.demo
+      - --set-network-zone=BA.dmz

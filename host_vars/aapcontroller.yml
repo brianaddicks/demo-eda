@@ -128,6 +128,15 @@ controller_templates:
     credentials:
       - "{{ ssh_cred }}"
       - "{{ ssl_cert_cred }}"
+  - name: "Linux - Install Dynatrace OneAgent"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/oneagent_install.yml"
+    execution_environment: "{{ rhel_ee }}"
+    credentials:
+      - "{{ ssh_cred }}"
+      - "{{ dynatrace_cred }}"
 
 controller_credential_types:
     - name: SSL Certificate
