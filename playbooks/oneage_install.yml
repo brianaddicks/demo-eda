@@ -1,0 +1,17 @@
+---
+- name: Download and install Dynatrace OneAgent
+  hosts: installoneagent
+  collections:
+    - dynatrace.oneagent
+  vars_files:
+    - encrypted_credentials.yml
+  vars:
+    oneagent_download_dir: /home/user1
+    oneagent_version: 1.199.247.20200714-111723
+    oneagent_install_args:
+      - INSTALL_PATH=/opt/example
+      - --set-host-group=My.HostGroup_123-456
+      - --set-network-zone=my.network.zone
+  tasks:
+    - import_role:
+        name: oneagent

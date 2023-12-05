@@ -12,5 +12,7 @@ ansible-navigator run ../playbooks/aap_configure.yml \
   --penv QUAY_HOST \
   --penv QUAY_PASSWORD \
   --penv QUAY_USERNAME \
+  --penv ONEAGENT_ENVIRONMENT_URL \
+  --penv ONEAGENT_PAAS_TOKEN \
   -i ../inventory.yml
 #   -m stdout \

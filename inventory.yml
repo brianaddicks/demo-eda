@@ -16,3 +16,8 @@ apiendpoints:
     aapcontroller:
   vars:
     ansible_connection: local
+installoneagent:
+  hosts:
+    eda-web1:
+    eda-web2:
+    eda-haproxy1:

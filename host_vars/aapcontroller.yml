@@ -13,10 +13,12 @@ ssh_cred: "SSH Cred"
 vcenter_cred: "vCenter Cred"
 quay_cred: "Quay"
 ssl_cert_cred: "SSL Wildcard"
+dynatrace_cred: "Dynatrace API"
 
 vcenter_ee: vCenter EE
 rhel_ee: RHEL EE
 aap_ee: AAP EE
+dynatrace_ee: Dynatrace EE
 
 inventory_eda_demo: EDA Demo Inventory
 project_eda_demo: EDA Demo Project
@@ -56,6 +58,13 @@ controller_credentials:
     password: "{{ lookup('ansible.builtin.env', 'QUAY_PASSWORD') }}"
     username: "{{ lookup('ansible.builtin.env', 'QUAY_USERNAME') }}"
     verify_ssl: true
+- name: "{{ dynatrace_cred }}"
+  description: "{{ dynatrace_cred }}"
+  organization: Default
+  credential_type: "{{ dynatrace_cred }}"
+  inputs:
+    oneagent_environment_url: "{{ lookup('ansible.builtin.env', 'ONEAGENT_ENVIRONMENT_URL') }}"
+    oneagent_paas_token: "{{ lookup('ansible.builtin.env', 'ONEAGENT_PAAS_TOKEN') }}"
 
 
 controller_projects:
@@ -79,6 +88,10 @@ controller_execution_environments:
     pull: always
   - name: "{{ aap_ee }}"
     image: quay.io/rh_ee_baddicks/ansible-controller-ee
+    credential: "{{ quay_cred }}"
+    pull: always
+  - name: "{{ dynatrace_ee }}"
+    image: quay.io/rh_ee_baddicks/dynatrace-ee
     credential: "{{ quay_cred }}"
     pull: always
 
@@ -148,3 +161,26 @@ controller_credential_types:
           cred_ssl_private_key_env: !unsafe "{{ cred_ssl_private_key }}"
           cred_ssl_certifcate_env: !unsafe "{{ cred_ssl_certifcate }}"
           cred_ssl_fullchain_env: !unsafe "{{ cred_ssl_fullchain }}"
+    - name: Dynatrace API
+      description: Dynatrace API
+      inputs:
+        fields:
+        - type: string
+          id: oneagent_environment_url
+          label: OneAgent Environment URL
+          multiline: false
+        - type: string
+          id: oneagent_paas_token
+          label: OneAgent PAAS Token
+          secret: true
+          multiline: false
+        required:
+        - oneagent_environment_url
+        - oneagent_paas_token
+      injectors:
+        extra_vars:
+          oneagent_environment_url: !unsafe "{{ oneagent_environment_url }}"
+          oneagent_paas_token: !unsafe "{{ oneagent_paas_token }}"
+        env:
+          oneagent_environment_url_env: !unsafe "{{ oneagent_environment_url }}"
+          oneagent_paas_token_env: !unsafe "{{ oneagent_paas_token }}"

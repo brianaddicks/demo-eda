@@ -7,7 +7,7 @@
     - name: Install HAProxy
       ansible.builtin.package:
         name: haproxy
-        state: present
+        state: latest
 
     - name: Create cert directory
       ansible.builtin.file:
