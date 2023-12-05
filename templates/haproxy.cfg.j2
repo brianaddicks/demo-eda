@@ -24,7 +24,9 @@ frontend web-eda
   bind *:443 ssl crt /etc/haproxy/certs/{{ ssl_cert_name }}
   mode http
   option forwardfor
-  http-request add-header X-Forwarded-Proto:\ https if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  http-request set-header X-Forwarded-Proto http if !{ ssl_fc }
+  http-request redirect scheme https unless { ssl_fc }
   default_backend eda-web-servers
 
 backend eda-web-servers
