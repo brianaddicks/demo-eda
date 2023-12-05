@@ -1,5 +1,6 @@
 ---
 controller_components:
+  - credential_types
   - credentials
   - execution_environments
   - projects
@@ -11,6 +12,7 @@ aap_cred: "AAP API Cred"
 ssh_cred: "SSH Cred"
 vcenter_cred: "vCenter Cred"
 quay_cred: "Quay"
+ssl_cert_cred: "SSL Wildcard"
 
 vcenter_ee: vCenter EE
 rhel_ee: RHEL EE
@@ -29,14 +31,14 @@ controller_credentials:
     password: "{{ lookup('ansible.builtin.env', 'CONTROLLER_PASSWORD') }}"
     username: "{{ lookup('ansible.builtin.env', 'CONTROLLER_USERNAME') }}"
     verify_ssl: "{{ lookup('ansible.builtin.env', 'CONTROLLER_VALIDATE_CERTS') | ansible.builtin.bool }}"
-- name: "{{ ssh_cred }}"
-  description: "{{ ssh_cred }}"
-  organization: Default
-  credential_type: Machine
-  inputs:
-    username: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USERNAME') }}"
-    ssh_key_data: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
-    become_method: "sudo"
+# - name: "{{ ssh_cred }}"
+#   description: "{{ ssh_cred }}"
+#   organization: Default
+#   credential_type: Machine
+#   inputs:
+#     username: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USERNAME') }}"
+#     ssh_key_data: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
+#     become_method: "sudo"
 - name: "{{ vcenter_cred }}"
   description: "{{ vcenter_cred }}"
   organization: Default
@@ -104,3 +106,45 @@ controller_templates:
     execution_environment: "{{ rhel_ee }}"
     credentials:
       - "{{ ssh_cred }}"
+  - name: "Linux - HAProxy Setup"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/haproxy_setup.yml"
+    execution_environment: "{{ rhel_ee }}"
+    credentials:
+      - "{{ ssh_cred }}"
+      - "{{ ssl_cert_cred }}"
+
+controller_credential_types:
+    - name: SSL Certificate
+      description: SSL Certificate
+      inputs:
+        fields:
+        - secret: true
+          type: string
+          id: cred_ssl_private_key
+          label: Private Key
+          multiline: true
+        - secret: false
+          type: string
+          id: cred_ssl_certifcate
+          label: Certificate
+          multiline: true
+        - secret: false
+          type: string
+          id: cred_ssl_fullchain
+          label: Certificate Chain
+          multiline: true
+        required:
+        - cred_ssl_private_key
+        - cred_ssl_certifcate
+      injectors:
+        extra_vars:
+          cred_ssl_private_key: !unsafe "{{ cred_ssl_private_key }}"
+          cred_ssl_certifcate: !unsafe "{{ cred_ssl_certifcate }}"
+          cred_ssl_fullchain: !unsafe "{{ cred_ssl_fullchain }}"
+        env:
+          cred_ssl_private_key_env: !unsafe "{{ cred_ssl_private_key }}"
+          cred_ssl_certifcate_env: !unsafe "{{ cred_ssl_certifcate }}"
+          cred_ssl_fullchain_env: !unsafe "{{ cred_ssl_fullchain }}"

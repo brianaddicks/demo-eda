@@ -1,0 +1,35 @@
+---
+- name: Deploy HAProxy on RHEL
+  hosts: haproxy
+  become: yes
+
+  tasks:
+    - name: Install HAProxy
+      ansible.builtin.package:
+        name: haproxy
+        state: present
+
+    - name: Configure HAProxy
+      template:
+        src: ../templates/sslcert.j2
+        dest: /etc/haproxy/certs/{{ ssl_cert_name }}
+      vars:
+        ssl_cert: "{{ cred_ssl_private_key }}"
+        ssl_chain: "{{ cred_ssl_certifcate }}"
+        ssl_key: "{{ cred_ssl_fullchain }}"
+      notify:
+        - restart haproxy
+
+    - name: Configure HAProxy
+      template:
+        src: ../templates/haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+      notify:
+        - restart haproxy
+
+  handlers:
+    - name: restart haproxy
+      systemd:
+        name: haproxy
+        state: restarted
+        enabled: yes

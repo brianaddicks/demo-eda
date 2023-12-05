@@ -6,6 +6,11 @@ webservers:
     vcenter_vm_folder: demo-eda
     vcenter_template: template-rhel-92
     vcenter_datacenter: acworth
+haproxy:
+  hosts:
+    eda-haproxy1:
+  vars:
+    ssl_cert_name: wildcard-addicks.us.pem
 apiendpoints:
   hosts:
     aapcontroller:
