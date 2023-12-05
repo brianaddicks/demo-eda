@@ -10,7 +10,6 @@ global
   group haproxy
   daemon
 
-
 defaults
   log global
   mode http
@@ -25,7 +24,7 @@ frontend web-eda
   bind *:443 ssl crt /etc/haproxy/certs/{{ ssl_cert_name }}
   mode http
   option forwardfor
-  reqadd X-Forwarded-Proto:\ https if { ssl_fc }
+  http-request add-header X-Forwarded-Proto:\ https if { ssl_fc }
   default_backend eda-web-servers
 
 backend eda-web-servers
