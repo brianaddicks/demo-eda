@@ -11,7 +11,7 @@
     - name: Nginx unavailable
       condition:
         all:
-          - event.title is match("Nginx Host monitor",ignorecase=true)
+          # - event.title is match("Nginx Host monitor",ignorecase=true)
           - event.status == "OPEN"
           # - event.impactedEntities.name contains "eda-web2.addicks.us"
         # all:
