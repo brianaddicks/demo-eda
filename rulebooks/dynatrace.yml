@@ -1,6 +1,6 @@
 ---
 - name: Listen for events on a webhook
-  hosts: localhost
+  hosts: all
   sources:
     - dynatrace.event_driven_ansible.dt_esa_api:
         dt_api_host: "{{ dynatrace_environment_url }}"
@@ -10,7 +10,9 @@
   rules:
     - name: Nginx unavailable
       condition:
-        all: "{{ webserver_conditions }}"
+        all:
+          - event.problemTitle contains "No process found for rule Nginx Host monitor"
+          - event.status == "OPEN"
       action:
         run_job_template:
           name: "Linux - Webserver Setup"
