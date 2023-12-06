@@ -4,7 +4,7 @@
   sources:
     - dynatrace.event_driven_ansible.dt_esa_api:
         dt_api_host: "{{ dynatrace_environment_url }}"
-        dt_api_token: "{{ dyantrace_token }}"
+        dt_api_token: "{{ dynatrace_token }}"
         delay: 60
 
   rules:
