@@ -14,16 +14,16 @@
         run_job_template:
           name: "Linux - Webserver Setup"
           organization: "Default"
-    - name: Problem payload Dynatrace for App Failure rate increase issue
-      condition: event.problemTitle contains "Failure rate increase"
-      action:
-        run_job_template:
-          name: "Remediate Application issue"
-          organization: "Default"
-    - name: Update comments in Dynatrace
-      condition:
-        all:
-          - event.status == "OPEN"
-      action:
-        run_playbook:
-          name: dt-update-comments.yml
+    # - name: Problem payload Dynatrace for App Failure rate increase issue
+    #   condition: event.problemTitle contains "Failure rate increase"
+    #   action:
+    #     run_job_template:
+    #       name: "Remediate Application issue"
+    #       organization: "Default"
+    # - name: Update comments in Dynatrace
+    #   condition:
+    #     all:
+    #       - event.status == "OPEN"
+    #   action:
+    #     run_playbook:
+    #       name: dt-update-comments.yml
