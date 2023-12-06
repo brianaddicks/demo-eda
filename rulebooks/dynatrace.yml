@@ -10,7 +10,7 @@
   rules:
     - name: Nginx unavailable
       condition:
-        all:
+        any:
           - event.problemTitle is defined
           - event.status is defined
         # all:
@@ -18,6 +18,8 @@
         #   - event.status == "OPEN"
       actions:
         - debug:
+        - print_event:
+            pretty: true
         # - run_job_template:
         #     name: "Linux - Webserver Setup"
         #     organization: "Default"
