@@ -10,19 +10,11 @@
   rules:
     - name: Nginx unavailable
       condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name
-        # all:
-          # - event.title is match("Nginx Host monitor",ignorecase=true)
-          # - event.status == "OPEN"
-          # - vars.dynatrace_hosts contains event.impactedEntities[0].name
-          # - event.impactedEntities.name contains "eda-web2.addicks.us"
-        # all:
-        #   - event.problemTitle contains "No process found for rule Nginx Host monitor"
-        #   - event.status == "OPEN"
       actions:
         - debug:
-        # - run_job_template:
-        #     name: "Linux - Webserver Setup"
-        #     organization: "Default"
+        - run_job_template:
+            name: "Linux - Webserver Setup"
+            organization: "Default"
     # - name: Problem payload Dynatrace for App Failure rate increase issue
     #   condition: event.problemTitle contains "Failure rate increase"
     #   action:
