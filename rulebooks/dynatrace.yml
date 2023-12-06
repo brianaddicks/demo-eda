@@ -31,6 +31,3 @@
     #     run_playbook:
     #       name: dt-update-comments.yml
 
-curl --request GET \
-  --header 'Authorization: Api-Token ***REMOVED***' \
-  --url '***REMOVED***
