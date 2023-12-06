@@ -19,10 +19,6 @@
         #   - event.status == "OPEN"
       actions:
         - debug:
-            msg:
-              - "event content: {{ event }}"
-              - "{{ event.impactedEntities }}"
-              - "{{ event.impactedEntities.name }}"
         - print_event:
             pretty: true
         # - run_job_template:
