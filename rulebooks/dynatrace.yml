@@ -14,9 +14,10 @@
           - event.problemTitle contains "No process found for rule Nginx Host monitor"
           - event.status == "OPEN"
       action:
-        run_job_template:
-          name: "Linux - Webserver Setup"
-          organization: "Default"
+        - debug:
+        - run_job_template:
+            name: "Linux - Webserver Setup"
+            organization: "Default"
     # - name: Problem payload Dynatrace for App Failure rate increase issue
     #   condition: event.problemTitle contains "Failure rate increase"
     #   action:
