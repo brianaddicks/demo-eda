@@ -13,12 +13,16 @@
         all:
           - event.title is match("Nginx Host monitor",ignorecase=true)
           - event.status == "OPEN"
-          - event.impactedEntities.name contains "eda-web2.addicks.us"
+          # - event.impactedEntities.name contains "eda-web2.addicks.us"
         # all:
         #   - event.problemTitle contains "No process found for rule Nginx Host monitor"
         #   - event.status == "OPEN"
       actions:
         - debug:
+            msg:
+              - "event content: {{ event }}"
+              - "{{ event.impactedEntities }}"
+              - "{{ event.impactedEntities.name }}"
         - print_event:
             pretty: true
         # - run_job_template:
