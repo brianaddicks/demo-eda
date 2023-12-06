@@ -13,6 +13,7 @@
         all:
           # - event.title is match("Nginx Host monitor",ignorecase=true)
           - event.status == "OPEN"
+          - dynatrace_hosts contains event.impactedEntities[0].name
           # - event.impactedEntities.name contains "eda-web2.addicks.us"
         # all:
         #   - event.problemTitle contains "No process found for rule Nginx Host monitor"
