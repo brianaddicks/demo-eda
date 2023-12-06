@@ -1,23 +1,26 @@
 ---
-- name: Check Dynatrace events
+- name: Listen for events on a webhook
   hosts: all
   sources:
-    - dynatrace.event_driven_ansible.dt_esa_api:
-        dt_api_host: "{{ dynatrace_environment_url }}"
-        dt_api_token: "{{ dynatrace_token }}"
-        delay: 60
+    - name: watch our site for outage
+      ansible.eda.url_check:
+        urls:
+          - "http://eda-web2"
+        delay: 4
 
   rules:
-    - name: Nginx unavailable
-      condition:
-        all:
-          - event.problemTitle contains "No process found for rule Nginx Host monitor"
-          - event.status == "OPEN"
+    - name: restart web server
+      condition: event.url_check.status == "down"
+      throttle:
+        once_within: 169 seconds
+        group_by_attributes:
+          - event.url_check.url
       actions:
         - debug:
         - run_job_template:
             name: "Linux - Webserver Setup"
             organization: "Default"
+
     # - name: Problem payload Dynatrace for App Failure rate increase issue
     #   condition: event.problemTitle contains "Failure rate increase"
     #   action:
