@@ -11,7 +11,7 @@
     - name: Nginx unavailable
       condition:
         any:
-          - event.title == "No process found for rule Nginx Host monitor"
+          - event.title is match("Nginx Host monitor",ignorecase=true)
           - event.status == "OPEN"
         # all:
         #   - event.problemTitle contains "No process found for rule Nginx Host monitor"
