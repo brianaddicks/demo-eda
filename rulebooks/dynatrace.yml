@@ -5,13 +5,13 @@
     - dynatrace.event_driven_ansible.dt_esa_api:
         dt_api_host: "{{ dynatrace_environment_url }}"
         dt_api_token: "{{ dynatrace_token }}"
-        delay: 60
+        delay: 30
 
   rules:
     - name: Nginx unavailable
       condition:
         all:
-          - event.title is match("Nginx Host monitor",ignorecase=true)
+          # - event.title is match("Nginx Host monitor",ignorecase=true)
           - event.status == "OPEN"
           # - event.impactedEntities.name contains "eda-web2.addicks.us"
         # all:
