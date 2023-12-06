@@ -20,8 +20,6 @@
         #   - event.status == "OPEN"
       actions:
         - debug:
-        - print_event:
-            pretty: true
         # - run_job_template:
         #     name: "Linux - Webserver Setup"
         #     organization: "Default"
