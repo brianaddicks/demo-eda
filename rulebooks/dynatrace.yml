@@ -13,6 +13,7 @@
         any:
           - event.title is match("Nginx Host monitor",ignorecase=true)
           - event.status == "OPEN"
+          - event.impactedEntities.name contains eda-web2.addicks.us
         # all:
         #   - event.problemTitle contains "No process found for rule Nginx Host monitor"
         #   - event.status == "OPEN"
