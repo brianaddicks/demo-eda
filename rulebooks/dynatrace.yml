@@ -10,7 +10,7 @@
   rules:
     - name: Nginx unavailable
       condition:
-        all: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name
+        all: event.status == "OPEN" and event.impactedEntities[0].name is match("eda-web")
           # - event.title is match("Nginx Host monitor",ignorecase=true)
           # - event.status == "OPEN"
           # - vars.dynatrace_hosts contains event.impactedEntities[0].name
