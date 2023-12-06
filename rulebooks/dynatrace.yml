@@ -11,8 +11,8 @@
     - name: Nginx unavailable
       condition:
         any:
-          - event.problemTitle is defined
-          - event.status is defined
+          - event.title is "No process found for rule Nginx Host monitor"
+          - event.status == "OPEN"
         # all:
         #   - event.problemTitle contains "No process found for rule Nginx Host monitor"
         #   - event.status == "OPEN"
