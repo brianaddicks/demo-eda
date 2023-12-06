@@ -9,7 +9,10 @@
 
   rules:
     - name: Nginx unavailable
-      condition: event.problemTitle contains "No process found for rule Nginx"
+      condition:
+        all:
+          - event.problemTitle contains "No process found for rule Nginx Host monitor"
+          - event.status == "OPEN"
       action:
         run_job_template:
           name: "Linux - Webserver Setup"
@@ -27,3 +30,7 @@
     #   action:
     #     run_playbook:
     #       name: dt-update-comments.yml
+
+curl --request GET \
+  --header 'Authorization: Api-Token ***REMOVED***' \
+  --url '***REMOVED***
