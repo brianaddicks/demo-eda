@@ -13,7 +13,7 @@
         all:
           - event.problemTitle contains "No process found for rule Nginx Host monitor"
           - event.status == "OPEN"
-      action:
+      actions:
         - debug:
         - run_job_template:
             name: "Linux - Webserver Setup"
