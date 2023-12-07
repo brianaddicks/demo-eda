@@ -14,11 +14,13 @@ vcenter_cred: "vCenter Cred"
 quay_cred: "Quay"
 ssl_cert_cred: "SSL Wildcard"
 dynatrace_cred: "Dynatrace API"
+snow_cred: "ServiceNow Cred"
 
 vcenter_ee: vCenter EE
 rhel_ee: RHEL EE
 aap_ee: AAP EE
 dynatrace_ee: Dynatrace EE
+snow_ee: ServiceNow EE
 
 inventory_eda_demo: EDA Demo Inventory
 project_eda_demo: EDA Demo Project
@@ -65,6 +67,14 @@ controller_credentials:
   inputs:
     oneagent_environment_url: "{{ lookup('ansible.builtin.env', 'ONEAGENT_ENVIRONMENT_URL') }}"
     oneagent_paas_token: "{{ lookup('ansible.builtin.env', 'ONEAGENT_PAAS_TOKEN') }}"
+- name: "{{ snow_cred }}"
+  description: "{{ snow_cred }}"
+  organization: Default
+  credential_type: "ServiceNow"
+  inputs:
+    sn_host: "{{ lookup('ansible.builtin.env', 'sn_host') }}"
+    sn_username: "{{ lookup('ansible.builtin.env', 'SN_USERNAME') }}"
+    sn_password: "{{ lookup('ansible.builtin.env', 'SN_PASSWORD') }}"
 
 
 controller_projects:
@@ -138,59 +148,97 @@ controller_templates:
     credentials:
       - "{{ ssh_cred }}"
       - "{{ dynatrace_cred }}"
+  - name: "SNOW - Create Incident"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/snow_incident.yml"
+    execution_environment: "{{ snow_ee }}"
+    credentials:
+      - "{{ snow_cred }}"
 
 controller_credential_types:
-    - name: SSL Certificate
-      description: SSL Certificate
-      inputs:
-        fields:
-        - secret: true
-          type: string
-          id: cred_ssl_private_key
-          label: Private Key
-          multiline: true
-        - secret: false
-          type: string
-          id: cred_ssl_certifcate
-          label: Certificate
-          multiline: true
-        - secret: false
-          type: string
-          id: cred_ssl_fullchain
-          label: Certificate Chain
-          multiline: true
-        required:
-        - cred_ssl_private_key
-        - cred_ssl_certifcate
-      injectors:
-        extra_vars:
-          cred_ssl_private_key: !unsafe "{{ cred_ssl_private_key }}"
-          cred_ssl_certifcate: !unsafe "{{ cred_ssl_certifcate }}"
-          cred_ssl_fullchain: !unsafe "{{ cred_ssl_fullchain }}"
-        env:
-          cred_ssl_private_key_env: !unsafe "{{ cred_ssl_private_key }}"
-          cred_ssl_certifcate_env: !unsafe "{{ cred_ssl_certifcate }}"
-          cred_ssl_fullchain_env: !unsafe "{{ cred_ssl_fullchain }}"
-    - name: Dynatrace API
-      description: Dynatrace API
-      inputs:
-        fields:
-        - type: string
-          id: oneagent_environment_url
-          label: OneAgent Environment URL
-          multiline: false
-        - type: string
-          id: oneagent_paas_token
-          label: OneAgent PAAS Token
-          secret: true
-          multiline: false
-        required:
-        - oneagent_environment_url
-        - oneagent_paas_token
-      injectors:
-        extra_vars:
-          oneagent_environment_url: !unsafe "{{ oneagent_environment_url }}"
-          oneagent_paas_token: !unsafe "{{ oneagent_paas_token }}"
-        env:
-          oneagent_environment_url_env: !unsafe "{{ oneagent_environment_url }}"
-          oneagent_paas_token_env: !unsafe "{{ oneagent_paas_token }}"
+  - name: SSL Certificate
+    description: SSL Certificate
+    inputs:
+      fields:
+      - secret: true
+        type: string
+        id: cred_ssl_private_key
+        label: Private Key
+        multiline: true
+      - secret: false
+        type: string
+        id: cred_ssl_certifcate
+        label: Certificate
+        multiline: true
+      - secret: false
+        type: string
+        id: cred_ssl_fullchain
+        label: Certificate Chain
+        multiline: true
+      required:
+      - cred_ssl_private_key
+      - cred_ssl_certifcate
+    injectors:
+      extra_vars:
+        cred_ssl_private_key: !unsafe "{{ cred_ssl_private_key }}"
+        cred_ssl_certifcate: !unsafe "{{ cred_ssl_certifcate }}"
+        cred_ssl_fullchain: !unsafe "{{ cred_ssl_fullchain }}"
+      env:
+        cred_ssl_private_key_env: !unsafe "{{ cred_ssl_private_key }}"
+        cred_ssl_certifcate_env: !unsafe "{{ cred_ssl_certifcate }}"
+        cred_ssl_fullchain_env: !unsafe "{{ cred_ssl_fullchain }}"
+  - name: Dynatrace API
+    description: Dynatrace API
+    inputs:
+      fields:
+      - type: string
+        id: oneagent_environment_url
+        label: OneAgent Environment URL
+        multiline: false
+      - type: string
+        id: oneagent_paas_token
+        label: OneAgent PAAS Token
+        secret: true
+        multiline: false
+      required:
+      - oneagent_environment_url
+      - oneagent_paas_token
+    injectors:
+      extra_vars:
+        oneagent_environment_url: !unsafe "{{ oneagent_environment_url }}"
+        oneagent_paas_token: !unsafe "{{ oneagent_paas_token }}"
+      env:
+        oneagent_environment_url_env: !unsafe "{{ oneagent_environment_url }}"
+        oneagent_paas_token_env: !unsafe "{{ oneagent_paas_token }}"
+  - name: ServiceNow
+    description: ServiceNow
+    inputs:
+      fields:
+      - type: string
+        id: sn_host
+        label: ServiceNow URL
+        multiline: false
+      - type: string
+        id: sn_username
+        label: ServiceNow Username
+        multiline: false
+      - type: string
+        id: sn_password
+        label: ServiceNow Password
+        secret: true
+        multiline: false
+      required:
+      - sn_host
+      - sn_username
+      - sn_password
+    injectors:
+      extra_vars:
+        sn_instance: !unsafe "{{ sn_host }}"
+        sn_username: !unsafe "{{ sn_username }}"
+        sn_password: !unsafe "{{ sn_password }}"
+      env:
+        SN_HOST: !unsafe "{{ sn_host }}"
+        SN_USERNAME: !unsafe "{{ sn_username }}"
+        SN_PASSWORD: !unsafe "{{ sn_password }}"
