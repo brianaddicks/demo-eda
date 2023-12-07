@@ -10,9 +10,9 @@
       state: in_progress
       other:
         comments: |
-          "Ansible is attempting Auto-Healing of {{ impacted_entity }}. \n
-          See [code]<a href=\"https://{{ aap_fqdn }}#/jobs/workflow/{{ awx_workflow_job_id }}/output\" target=\"_blank\">Ansible Controller</a>[/code] for Operational Status. \n
-          {{ custom_snow_message | default(omit) }}"
+          Ansible is attempting Auto-Healing of {{ impacted_entity }}.
+          See [code]<a href=\"https://{{ aap_fqdn }}#/jobs/workflow/{{ awx_workflow_job_id }}/output\" target=\"_blank\">Ansible Controller</a>[/code] for Operational Status.
+          {{ custom_snow_message | default(omit) }}
 
 
 
