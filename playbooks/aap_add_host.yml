@@ -35,10 +35,14 @@
       - name: webservers
         inventory: EDA Demo Inventory
         hosts:
+          - eda-web1
+          - eda-web2
           - eda-web3
       - name: installoneagent
         inventory: EDA Demo Inventory
         hosts:
+          - eda-web1
+          - eda-web2
           - eda-web3
 
   tasks:
