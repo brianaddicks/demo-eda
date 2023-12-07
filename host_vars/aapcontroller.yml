@@ -160,6 +160,16 @@ controller_templates:
     execution_environment: "{{ snow_ee }}"
     credentials:
       - "{{ snow_cred }}"
+  - name: "SNOW - Update Incident"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/snow_update_incident.yml"
+    execution_environment: "{{ snow_ee }}"
+    extra_vars:
+      aap_fqdn: add-acw-aap-001.addicks.us
+    credentials:
+      - "{{ snow_cred }}"
 
 controller_credential_types:
   - name: SSL Certificate

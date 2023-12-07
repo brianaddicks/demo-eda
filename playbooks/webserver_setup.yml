@@ -3,7 +3,6 @@
   hosts: webservers
   gather_facts: false
   become: true
-  vars:
 
   tasks:
     - name: Install nginx
