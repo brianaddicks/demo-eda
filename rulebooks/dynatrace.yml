@@ -18,7 +18,7 @@
             job_args:
               extra_vars:
                 dynatrace_problem_id: "{{ event.displayId }}"
-                dynatrace_entity: "{{ event.impactedEntities[0].name }}"
+                impacted_entity: "{{ event.impactedEntities[0].name }}"
     # - name: Problem payload Dynatrace for App Failure rate increase issue
     #   condition: event.problemTitle contains "Failure rate increase"
     #   action:

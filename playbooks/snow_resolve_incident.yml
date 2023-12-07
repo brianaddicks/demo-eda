@@ -10,5 +10,5 @@
       close_code: "Solved Remotely (Permanently)"
       close_notes: "Closed"
       caller: "admin"
-      description: "Issue has been auto-remediated, {{ dynatrace_entity }} is now accessible"
+      description: "Issue has been auto-remediated, {{ impacted_entity }} is now accessible"
       short_description: "{{ ansible_date_time.iso8601_micro }}"

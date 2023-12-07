@@ -6,8 +6,8 @@
     servicenow.itsm.incident:
       state: new
       caller: admin
-      short_description: "{{ dynatrace_entity }} is down!"
-      description: "Super-monitor has detected {{ dynatrace_entity }} has an outage!"
+      short_description: "{{ impacted_entity }} is down!"
+      description: "Super-monitor has detected {{ impacted_entity }} has an outage!"
       impact: high
       urgency: high
     register: incident

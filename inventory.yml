@@ -25,3 +25,6 @@ installoneagent:
     oneagent_install_args:
       - --set-host-group=BA.eda.demo
       - --set-network-zone=BA.dmz
+all:
+  vars:
+    aap_fqdn: add-acw-aap-001.addicks.us
