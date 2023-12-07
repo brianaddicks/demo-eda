@@ -9,7 +9,7 @@
 
   rules:
     - name: Nginx unavailable
-      condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name
+      condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name and event.title == "No process found for rule Nginx Host monitor"
       actions:
         - debug:
         - run_workflow_template:
