@@ -1,0 +1,12 @@
+---
+- name: Add new host to webserver group
+  hosts: aapcontroller
+  gather_facts: false
+
+  tasks:
+    - name: Add host
+      ansible.builtin.add_host:
+        name: eda-web2
+        groups:
+          - installoneagent
+          - webservers

@@ -199,6 +199,14 @@ controller_templates:
     credentials:
       - "{{ ssh_cred }}"
       - "{{ rh_org_cred }}"
+  - name: "AAP - Add Host"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/aap_add_host.yml"
+    execution_environment: "{{ rhel_ee }}"
+    credentials:
+      - "{{ ssh_cred }}"
 
 controller_credential_types:
   - name: SSL Certificate
