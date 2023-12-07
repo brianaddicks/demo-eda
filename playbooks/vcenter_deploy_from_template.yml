@@ -10,9 +10,6 @@
         datacenter: "{{ vcenter_datacenter }}"
 
   tasks:
-    - name: Refresh inventory to ensure new instances exist in inventory
-      ansible.builtin.meta: refresh_inventory
-
     - name: Set vm_name fact from ansible_host
       ansible.builtin.set_fact:
         vm_name: "{{ inventory_hostname_short }}"

@@ -6,6 +6,7 @@
     controller_validate_certs: "{{ lookup('ansible.builtin.env', 'CONTROLLER_VALIDATE_CERTS') | ansible.builtin.bool }}"
     controller_hosts:
       - name: eda-web3
+        enabled: true
         inventory: EDA Demo Inventory
         variables:
           vm_hardware:
@@ -53,3 +54,5 @@
       loop:
         - hosts
         - groups
+    - name: Refresh inventory to ensure new instances exist in inventory
+      ansible.builtin.meta: refresh_inventory
