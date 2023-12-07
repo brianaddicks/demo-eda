@@ -1,7 +1,7 @@
 ---
 - name: Deploy HAProxy on RHEL
   hosts: haproxy
-  become: yes
+  become: true
 
   tasks:
     - name: Install HAProxy
@@ -40,14 +40,6 @@
       ansible.builtin.template:
         src: ../templates/haproxy.cfg.j2
         dest: /etc/haproxy/haproxy.cfg
-      notify:
-        - restart haproxy
-
-    - name: Disable eda-web3
-      community.general.haproxy:
-        state: disabled
-        host: eda-web3
-        backend: eda-web-servers
       notify:
         - restart haproxy
 
