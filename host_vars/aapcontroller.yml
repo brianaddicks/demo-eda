@@ -140,6 +140,14 @@ controller_templates:
     execution_environment: "{{ rhel_ee }}"
     credentials:
       - "{{ ssh_cred }}"
+  - name: "Linux - Day 1 Setup"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/linux_day1.yml"
+    execution_environment: "{{ rhel_ee }}"
+    credentials:
+      - "{{ ssh_cred }}"
   - name: "Linux - HAProxy Setup"
     job_type: run
     inventory: "{{ inventory_eda_demo }}"
