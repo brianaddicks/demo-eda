@@ -16,6 +16,7 @@ vm_nic_config:
       - addicks.us
 install_packages:
   - nginx
+  - stress-ng
 firewall_services:
   - http
 enabled_services:
