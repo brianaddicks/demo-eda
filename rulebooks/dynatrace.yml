@@ -12,8 +12,8 @@
       condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name
       actions:
         - debug:
-        - run_job_template:
-            name: "SNOW - Create Incident"
+        - run_workflow_template:
+            name: "WF - Remediate Webservers"
             organization: "Default"
             job_args:
               extra_vars:
