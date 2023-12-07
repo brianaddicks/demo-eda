@@ -1,0 +1,36 @@
+#jinja2: trim_blocks: False
+instance-id: cloud-vm
+local-hostname: {{ vm_name }}
+
+{% if vm_nic_config is defined %}network:
+  version: 1
+  config:
+    {%- for nic_config in vm_nic_config %}
+    - type: {{ nic_config.type }}
+      {# physical #}
+      {%- if nic_config.type == 'physical' %}
+      {%- if nic_config.name is defined %}name: {{ nic_config.name }}{% endif %}
+      {% if nic_config.subnets is defined %}subnets:
+        {% for subnet in nic_config.subnets -%}
+        - type: {{ subnet.type }}
+          {% if subnet.address is defined %}address: {{ subnet.address }}{% endif %}
+          {% if subnet.gateway is defined %}gateway: {{ subnet.gateway }}{% endif %}
+        {%- endfor -%}
+      {% endif -%}
+      {% endif -%}
+
+      {# nameserver #}
+      {%- if nic_config.type == 'nameserver' %}
+      {%- if nic_config.address is defined %}address:
+        {% for address in nic_config.address -%}
+        - {{ address }}
+        {% endfor -%}
+      {% endif %}
+      {% if nic_config.search is defined %}search:
+        {% for search in nic_config.search -%}
+        - {{ search }}
+        {% endfor -%}
+      {% endif %}
+      {% endif %}
+    {%- endfor -%}
+{% endif %}

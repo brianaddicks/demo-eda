@@ -1,30 +1,27 @@
-webservers:
-  hosts:
-    eda-web1:
-    eda-web2:
-  vars:
-    vcenter_vm_folder: demo-eda
-    vcenter_template: template-rhel-92
-    vcenter_datacenter: acworth
-haproxy:
-  hosts:
-    eda-haproxy1:
-  vars:
-    ssl_cert_name: wildcard-addicks.us.pem
-apiendpoints:
-  hosts:
-    aapcontroller:
-  vars:
-    ansible_connection: local
-installoneagent:
-  hosts:
-    eda-web1:
-    eda-web2:
-    eda-haproxy1:
-  vars:
-    oneagent_install_args:
-      - --set-host-group=BA.eda.demo
-      - --set-network-zone=BA.dmz
 all:
   vars:
     aap_fqdn: add-acw-aap-001.addicks.us
+  children:
+    webservers:
+      hosts:
+        eda-web1:
+        eda-web2:
+    haproxy:
+      hosts:
+        eda-haproxy1:
+      vars:
+        ssl_cert_name: wildcard-addicks.us.pem
+    apiendpoints:
+      hosts:
+        aapcontroller:
+      vars:
+        ansible_connection: local
+    installoneagent:
+      hosts:
+        eda-web1:
+        eda-web2:
+        eda-haproxy1:
+      vars:
+        oneagent_install_args:
+          - --set-host-group=BA.eda.demo
+          - --set-network-zone=BA.dmz

@@ -1,0 +1,23 @@
+---
+vm_hardware:
+  num_cpus: 2
+  memory_mb: 2048
+vm_nic_config:
+  - type: physical
+    name: eth0
+    subnets:
+      - type: static
+        address: 10.10.66.92/24
+        gateway: 10.10.66.1
+  - type: nameserver
+    address:
+      - 10.10.66.20
+    search:
+      - addicks.us
+install_packages:
+  - nginx
+firewall_services:
+  - http
+enabled_services:
+  - nginx
+vm_disk_size_gb: 50

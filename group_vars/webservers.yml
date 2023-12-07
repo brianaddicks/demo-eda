@@ -1,0 +1,28 @@
+---
+rhc_insights:
+  state: present
+  autoupdate: true
+  remediation: absent
+rhc_repositories:
+  - name: 'rhel-9-for-x86_64-baseos-rpms'
+    state: enabled
+  - name: 'rhel-9-for-x86_64-appstream-rpms'
+    state: enabled
+rhc_auth:
+  activation_keys:
+    keys: ['employee-sku']
+esxi_hostname: add-acw-esx-001.addicks.us
+vcenter_vm_folder: demo-eda
+vcenter_template: template-rhel-92
+vcenter_datacenter: acworth
+default_packages:
+  - cockpit
+enabled_services:
+  - cockpit
+vm_admins:
+  - name: ansible
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBl9C61r5gvqxZFgC+f8Lmgrl5oQ51Q2rJpQQm+KIo5T brian@addicks.us'
+  - name: sysadmin
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKRFmPFeK5xvacd7X+IqvFKS+yKkwXpSNHv96f8zGrR4 brian@addicks.us'

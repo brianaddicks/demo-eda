@@ -1,0 +1,13 @@
+#jinja2: trim_blocks: False
+#cloud-config
+users:
+{% for user in vm_admins -%}
+- name: {{ user.name }}
+  plain_text_passwd: TestPassword123
+  sudo: "ALL=(ALL) NOPASSWD:ALL"
+  {% if user.ssh_keys is defined %}ssh_authorized_keys:
+    {% for key in user.ssh_keys -%}
+    - {{ key }}
+    {% endfor -%}
+  {% endif %}
+{% endfor %}

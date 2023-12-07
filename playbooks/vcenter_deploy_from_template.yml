@@ -1,0 +1,49 @@
+---
+- name: Deploy VM from template
+  hosts: webservers
+  gather_facts: false
+  vars:
+    - vcenter_creds: &vcenter_conn
+        hostname: "{{ lookup('ansible.builtin.env', 'VMWARE_HOST') }}"
+        username: "{{ lookup('ansible.builtin.env', 'VMWARE_USER') }}"
+        password: "{{ lookup('ansible.builtin.env', 'VMWARE_PASSWORD') }}"
+        datacenter: "{{ vcenter_datacenter }}"
+
+  tasks:
+    - name: Set vm_name fact from ansible_host
+      ansible.builtin.set_fact:
+        vm_name: "{{ inventory_hostname_short }}"
+
+    - name: Set vm_disk_resize if vm_disk_size_gb is defined
+      ansible.builtin.set_fact:
+        vm_disk_resize:
+          - size_gb: "{{ vm_disk_size_gb }}"
+            controller_type: 'paravirtual'
+            controller_number: 0
+            unit_number: 0
+      when: vm_disk_size_gb is defined
+
+    - name: Clone a virtual machine from template
+      community.vmware.vmware_guest:
+        <<: *vcenter_conn
+        name: "{{ inventory_hostname_short }}"
+        template: "{{ vcenter_template_name }}"
+        folder: "{{ vcenter_folder }}"
+        esxi_hostname: "{{ esxi_hostname }}"
+        state: poweredon
+        wait_for_ip_address: true
+        datastore: "{{ vcenter_datastore }}"
+        hardware: "{{ vm_hardware }}"
+        disk: "{{ vm_disk_resize | default(omit) }}"
+        advanced_settings:
+          - key: "guestinfo.metadata"
+            value: "{{ lookup('template', './templates/metadata.yml.j2') | b64encode }}"
+          - key: "guestinfo.metadata.encoding"
+            value: "base64"
+          - key: "guestinfo.userdata"
+            value: "{{ lookup('template', './templates/user-data.yml.j2') | b64encode }}"
+          - key: "guestinfo.userdata.encoding"
+            value: "base64"
+      register: new_vm_fact
+      delegate_to: vcenter
+...

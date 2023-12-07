@@ -15,6 +15,7 @@ quay_cred: "Quay"
 ssl_cert_cred: "SSL Wildcard"
 dynatrace_cred: "Dynatrace API"
 snow_cred: "ServiceNow Cred"
+rh_org_cred: "Red Hat Organization ID"
 
 vcenter_ee: vCenter EE
 rhel_ee: RHEL EE
@@ -26,56 +27,61 @@ inventory_eda_demo: EDA Demo Inventory
 project_eda_demo: EDA Demo Project
 
 controller_credentials:
-- name: "{{ aap_cred }}"
-  description: "{{ aap_cred }}"
-  organization: Default
-  credential_type: Red Hat Ansible Automation Platform
-  inputs:
-    host: "{{ lookup('ansible.builtin.env', 'CONTROLLER_HOST') }}"
-    password: "{{ lookup('ansible.builtin.env', 'CONTROLLER_PASSWORD') }}"
-    username: "{{ lookup('ansible.builtin.env', 'CONTROLLER_USERNAME') }}"
-    verify_ssl: "{{ lookup('ansible.builtin.env', 'CONTROLLER_VALIDATE_CERTS') | ansible.builtin.bool }}"
-# - name: "{{ ssh_cred }}"
-#   description: "{{ ssh_cred }}"
-#   organization: Default
-#   credential_type: Machine
-#   inputs:
-#     username: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USERNAME') }}"
-#     ssh_key_data: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
-#     become_method: "sudo"
-- name: "{{ vcenter_cred }}"
-  description: "{{ vcenter_cred }}"
-  organization: Default
-  credential_type: VMware vCenter
-  inputs:
-    host: "{{ lookup('ansible.builtin.env', 'VMWARE_HOST') }}"
-    password: "{{ lookup('ansible.builtin.env', 'VMWARE_PASSWORD') }}"
-    username: "{{ lookup('ansible.builtin.env', 'VMWARE_USER') }}"
-- name: "{{ quay_cred }}"
-  description: "{{ quay_cred }}"
-  organization: Default
-  credential_type: Container Registry
-  inputs:
-    host: "{{ lookup('ansible.builtin.env', 'QUAY_HOST') }}"
-    password: "{{ lookup('ansible.builtin.env', 'QUAY_PASSWORD') }}"
-    username: "{{ lookup('ansible.builtin.env', 'QUAY_USERNAME') }}"
-    verify_ssl: true
-- name: "{{ dynatrace_cred }}"
-  description: "{{ dynatrace_cred }}"
-  organization: Default
-  credential_type: "{{ dynatrace_cred }}"
-  inputs:
-    oneagent_environment_url: "{{ lookup('ansible.builtin.env', 'ONEAGENT_ENVIRONMENT_URL') }}"
-    oneagent_paas_token: "{{ lookup('ansible.builtin.env', 'ONEAGENT_PAAS_TOKEN') }}"
-- name: "{{ snow_cred }}"
-  description: "{{ snow_cred }}"
-  organization: Default
-  credential_type: "ServiceNow"
-  inputs:
-    sn_host: "{{ lookup('ansible.builtin.env', 'SN_HOST') }}"
-    sn_username: "{{ lookup('ansible.builtin.env', 'SN_USERNAME') }}"
-    sn_password: "{{ lookup('ansible.builtin.env', 'SN_PASSWORD') }}"
-
+  - name: "{{ aap_cred }}"
+    description: "{{ aap_cred }}"
+    organization: Default
+    credential_type: Red Hat Ansible Automation Platform
+    inputs:
+      host: "{{ lookup('ansible.builtin.env', 'CONTROLLER_HOST') }}"
+      password: "{{ lookup('ansible.builtin.env', 'CONTROLLER_PASSWORD') }}"
+      username: "{{ lookup('ansible.builtin.env', 'CONTROLLER_USERNAME') }}"
+      verify_ssl: "{{ lookup('ansible.builtin.env', 'CONTROLLER_VALIDATE_CERTS') | ansible.builtin.bool }}"
+  # - name: "{{ ssh_cred }}"
+  #   description: "{{ ssh_cred }}"
+  #   organization: Default
+  #   credential_type: Machine
+  #   inputs:
+  #     username: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_USERNAME') }}"
+  #     ssh_key_data: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PRIVATE_KEY') }}"
+  #     become_method: "sudo"
+  - name: "{{ vcenter_cred }}"
+    description: "{{ vcenter_cred }}"
+    organization: Default
+    credential_type: VMware vCenter
+    inputs:
+      host: "{{ lookup('ansible.builtin.env', 'VMWARE_HOST') }}"
+      password: "{{ lookup('ansible.builtin.env', 'VMWARE_PASSWORD') }}"
+      username: "{{ lookup('ansible.builtin.env', 'VMWARE_USER') }}"
+  - name: "{{ quay_cred }}"
+    description: "{{ quay_cred }}"
+    organization: Default
+    credential_type: Container Registry
+    inputs:
+      host: "{{ lookup('ansible.builtin.env', 'QUAY_HOST') }}"
+      password: "{{ lookup('ansible.builtin.env', 'QUAY_PASSWORD') }}"
+      username: "{{ lookup('ansible.builtin.env', 'QUAY_USERNAME') }}"
+      verify_ssl: true
+  - name: "{{ dynatrace_cred }}"
+    description: "{{ dynatrace_cred }}"
+    organization: Default
+    credential_type: "{{ dynatrace_cred }}"
+    inputs:
+      oneagent_environment_url: "{{ lookup('ansible.builtin.env', 'ONEAGENT_ENVIRONMENT_URL') }}"
+      oneagent_paas_token: "{{ lookup('ansible.builtin.env', 'ONEAGENT_PAAS_TOKEN') }}"
+  - name: "{{ snow_cred }}"
+    description: "{{ snow_cred }}"
+    organization: Default
+    credential_type: "ServiceNow"
+    inputs:
+      sn_host: "{{ lookup('ansible.builtin.env', 'SN_HOST') }}"
+      sn_username: "{{ lookup('ansible.builtin.env', 'SN_USERNAME') }}"
+      sn_password: "{{ lookup('ansible.builtin.env', 'SN_PASSWORD') }}"
+  - name: "{{ rh_org_cred }}"
+    description: "{{ rh_org_cred }}"
+    organization: Default
+    credential_type: "{{ rh_org_cred }}"
+    inputs:
+      rhc_organization: "{{ lookup('ansible.builtin.env', 'RHC_ORGANIZATION') }}"
 
 controller_projects:
   - name: "{{ project_eda_demo }}"
@@ -176,6 +182,15 @@ controller_templates:
     execution_environment: "{{ snow_ee }}"
     credentials:
       - "{{ snow_cred }}"
+  - name: "vCenter - Deploy From Template"
+    job_type: run
+    inventory: "{{ inventory_eda_demo }}"
+    project: "{{ project_eda_demo }}"
+    playbook: "playbooks/vcenter_deploy_from_template.yml"
+    execution_environment: "{{ vcenter_ee }}"
+    credentials:
+      - "{{ vcenter_cred }}"
+      - "{{ rh_org_cred }}"
 
 controller_credential_types:
   - name: SSL Certificate
@@ -262,3 +277,19 @@ controller_credential_types:
         SN_HOST: !unsafe "{{ sn_host }}"
         SN_USERNAME: !unsafe "{{ sn_username }}"
         SN_PASSWORD: !unsafe "{{ sn_password }}"
+  - name: "{{ rh_org_cred }}"
+    description: "{{ rh_org_cred }}"
+    inputs:
+      fields:
+      - type: string
+        id: rhc_organization
+        label: Red Hat Orginization ID
+        secret: true
+        multiline: false
+      required:
+      - rhc_organization
+    injectors:
+      extra_vars:
+        rhc_organization: !unsafe "{{ rhc_organization }}"
+      env:
+        RHC_ORGANIZATION: !unsafe "{{ rhc_organization }}"
