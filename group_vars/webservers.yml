@@ -23,3 +23,7 @@ vm_admins:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKRFmPFeK5xvacd7X+IqvFKS+yKkwXpSNHv96f8zGrR4 brian@addicks.us'
 vcenter_template_name: template-rhel-92
+esxi_hostname: add-acw-esx-001.addicks.us
+vcenter_vm_folder: demo-eda
+vcenter_template: template-rhel-92
+vcenter_datacenter: acworth
