@@ -1,0 +1,20 @@
+---
+- name: Enable new backend host
+  hosts: haproxy
+  become: yes
+
+  tasks:
+    - name: Enable eda-web3
+      community.general.haproxy:
+        state: enabled
+        host: eda-web3
+        backend: eda-web-servers
+      notify:
+        - restart haproxy
+
+  handlers:
+    - name: restart haproxy
+      ansible.builtin.service:
+        name: haproxy
+        state: restarted
+        enabled: true
