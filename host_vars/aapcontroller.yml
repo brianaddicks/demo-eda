@@ -72,7 +72,7 @@ controller_credentials:
   organization: Default
   credential_type: "ServiceNow"
   inputs:
-    sn_host: "{{ lookup('ansible.builtin.env', 'sn_host') }}"
+    sn_host: "{{ lookup('ansible.builtin.env', 'SN_HOST') }}"
     sn_username: "{{ lookup('ansible.builtin.env', 'SN_USERNAME') }}"
     sn_password: "{{ lookup('ansible.builtin.env', 'SN_PASSWORD') }}"
 
