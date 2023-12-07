@@ -14,6 +14,7 @@ all:
     apiendpoints:
       hosts:
         aapcontroller:
+        vcenter:
       vars:
         ansible_connection: local
     installoneagent:
@@ -25,8 +26,3 @@ all:
         oneagent_install_args:
           - --set-host-group=BA.eda.demo
           - --set-network-zone=BA.dmz
-      apiendpoints:
-        hosts:
-          vcenter:
-        vars:
-          ansible_connection: local
