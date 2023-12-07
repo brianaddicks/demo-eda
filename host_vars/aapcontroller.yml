@@ -105,6 +105,10 @@ controller_execution_environments:
     image: quay.io/rh_ee_baddicks/dynatrace-ee
     credential: "{{ quay_cred }}"
     pull: always
+  - name: "{{ snow_ee }}"
+    image: quay.io/rh_ee_baddicks/snow-ee
+    credential: "{{ quay_cred }}"
+    pull: always
 
 controller_inventories:
   - name: "{{ inventory_eda_demo }}"
