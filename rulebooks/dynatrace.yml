@@ -19,6 +19,17 @@
               extra_vars:
                 dynatrace_problem_id: "{{ event.displayId }}"
                 impacted_entity: "{{ event.impactedEntities[0].name }}"
+    - name: High CPU
+      condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name and event.title == "CPU Saturation"
+      actions:
+        - debug:
+        # - run_workflow_template:
+        #     name: "WF - Remediate Webservers"
+        #     organization: "Default"
+        #     job_args:
+        #       extra_vars:
+        #         dynatrace_problem_id: "{{ event.displayId }}"
+        #         impacted_entity: "{{ event.impactedEntities[0].name }}"
     # - name: Problem payload Dynatrace for App Failure rate increase issue
     #   condition: event.problemTitle contains "Failure rate increase"
     #   action:
