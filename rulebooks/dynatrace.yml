@@ -13,7 +13,7 @@
       actions:
         - debug:
         - run_job_template:
-            name: "Linux - Webserver Setup"
+            name: "SNOW - Create Incident"
             organization: "Default"
             job_args:
               extra_vars:
