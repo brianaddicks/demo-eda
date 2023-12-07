@@ -20,7 +20,7 @@
                 dynatrace_problem_id: "{{ event.displayId }}"
                 impacted_entity: "{{ event.impactedEntities[0].name }}"
     - name: High CPU
-      condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name and event.title == "CPU Saturation"
+      condition: event.status == "OPEN" and vars.dynatrace_hosts contains event.impactedEntities[0].name
       actions:
         - debug:
         # - run_workflow_template:
