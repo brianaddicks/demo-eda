@@ -28,7 +28,7 @@
         <<: *vcenter_conn
         name: "{{ inventory_hostname_short }}"
         template: "{{ vcenter_template_name }}"
-        folder: "{{ vcenter_folder }}"
+        folder: "{{ vcenter_vm_folder }}"
         esxi_hostname: "{{ esxi_hostname }}"
         state: poweredon
         wait_for_ip_address: true
