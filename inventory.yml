@@ -15,6 +15,7 @@ all:
       hosts:
         aapcontroller:
         vcenter:
+          ansible_python_interpreter: /usr/bin/python3
       vars:
         ansible_connection: local
     installoneagent:
