@@ -11,10 +11,6 @@ rhc_repositories:
 rhc_auth:
   activation_keys:
     keys: ['employee-sku']
-esxi_hostname: add-acw-esx-001.addicks.us
-vcenter_vm_folder: demo-eda
-vcenter_template: template-rhel-92
-vcenter_datacenter: acworth
 default_packages:
   - cockpit
 enabled_services:
