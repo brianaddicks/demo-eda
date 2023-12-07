@@ -53,6 +53,3 @@
       loop:
         - hosts
         - groups
-    - name: Refresh inventory to ensure new instances exist in inventory
-      ansible.builtin.meta: refresh_inventory
-
