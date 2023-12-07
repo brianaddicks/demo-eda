@@ -22,3 +22,4 @@ vm_admins:
   - name: sysadmin
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKRFmPFeK5xvacd7X+IqvFKS+yKkwXpSNHv96f8zGrR4 brian@addicks.us'
+vcenter_template_name: template-rhel-92
