@@ -43,6 +43,14 @@
       notify:
         - restart haproxy
 
+    - name: Disable eda-web3
+      community.general.haproxy:
+        state: disabled
+        host: eda-web3
+        backend: eda-web-servers
+      notify:
+        - restart haproxy
+
   handlers:
     - name: restart haproxy
       ansible.builtin.service:
