@@ -6,7 +6,7 @@
   tasks:
     - name: Add host
       ansible.builtin.add_host:
-        name: eda-web2
+        name: eda-web3
         groups:
           - installoneagent
           - webservers
