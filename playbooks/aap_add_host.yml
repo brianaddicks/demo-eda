@@ -1,12 +1,29 @@
 ---
-- name: Add new host to webserver group
+- name: Setup Ansible components
   hosts: aapcontroller
   gather_facts: false
+  vars:
+    controller_validate_certs: "{{ lookup('ansible.builtin.env', 'CONTROLLER_VALIDATE_CERTS') | ansible.builtin.bool }}"
+    controller_hosts:
+      - name: eda-web3
+        inventory: EDA Demo Inventory
+        variables:
+          some_var: some_val
+          ansible_connection: local
+    controller_groups:
+      - name: webservers
+        inventory: EDA Demo Inventory
+        hosts:
+          - eda-web3
+      - name: installoneagent
+        inventory: EDA Demo Inventory
+        hosts:
+          - eda-web3
 
   tasks:
-    - name: Add host
-      ansible.builtin.add_host:
-        name: eda-web3
-        groups:
-          - installoneagent
-          - webservers
+    - name: Update projects and inventory
+      ansible.builtin.include_role:
+        name: "redhat_cop.controller_configuration.{{ item }}"
+      loop:
+        - hosts
+        - groups

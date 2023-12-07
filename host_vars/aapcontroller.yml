@@ -204,9 +204,9 @@ controller_templates:
     inventory: "{{ inventory_eda_demo }}"
     project: "{{ project_eda_demo }}"
     playbook: "playbooks/aap_add_host.yml"
-    execution_environment: "{{ rhel_ee }}"
+    execution_environment: "{{ aap_ee }}"
     credentials:
-      - "{{ ssh_cred }}"
+      - "{{ aap_cred }}"
 
 controller_credential_types:
   - name: SSL Certificate
