@@ -317,3 +317,19 @@ controller_credential_types:
         rhc_organization: !unsafe "{{ rhc_organization }}"
       env:
         RHC_ORGANIZATION: !unsafe "{{ rhc_organization }}"
+  - name: Palo Alto Firewall Credential
+    description: Palo Alto Firewall API Key
+    inputs:
+      fields:
+      - secret: true
+        type: string
+        id: palo_api_key
+        label: API Key
+      required:
+      - palo_api_key
+    injectors:
+      extra_vars:
+        palo_api_key: !unsafe "{{ palo_api_key }}"
+      env:
+        palo_api_key_env: !unsafe "{{ palo_api_key }}"
+

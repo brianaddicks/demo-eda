@@ -1,0 +1,69 @@
+---
+- name: Configure EDA output from Palo Alto
+  hosts: paloalto
+  vars:
+    server_profile_name_decrypt: test_profile
+
+  tasks:
+    - name: Set fact for PA provider
+      ansible.builtin.set_fact:
+        pa_provider:
+          api_key: "{{ palo_api_key }}"
+          ip_address: "{{ ansible_host }}"
+
+    - name: Create a HTTP Server Profile for Decryption Logs
+      paloaltonetworks.panos.panos_http_profile:
+        provider: '{{ pa_provider }}'
+        name: '{{ server_profile_name_decrypt }}'
+        decryption_name: 'decryption-logs-to-eda'
+        decryption_uri_format: 'https://test'
+        decryption_payload: >
+          {
+              "category": "network",
+              "details": {
+                  "action": "$action",
+                  "app": "$app",
+                  "cn": "$cn",
+                  "dst": "$dst",
+                  "device_name": "$device_name",
+                  "error": "$error",
+                  "issuer_cn": "$issuer_cn",
+                  "root_cn": "$root_cn",
+                  "root_status": "$root_status",
+                  "sni": "$sni",
+                  "src": "$src",
+                  "srcuser": "$srcuser"
+              },
+              "receive_time": "$receive_time",
+              "rule": "$rule",
+              "rule_uuid": "$rule_uuid",
+              "serial": "$serial",
+              "sessionid": "$sessionid",
+              "severity": "informational",
+              "type": "decryption"
+          }
+
+    - name: Create HTTP server
+      paloaltonetworks.panos.panos_http_server:
+        provider: '{{ pa_provider }}'
+        http_profile: '{{ server_profile_name_decrypt }}'
+        name: 'my-EDA-server'
+        address: '192.168.1.5'
+        http_method: 'GET'
+        http_port: 5000
+
+    - name: Add a HTTP header to HTTP Server Profile
+      paloaltonetworks.panos.panos_http_profile_header:
+        provider: '{{ pa_provider }}'
+        http_profile: '{{ server_profile_name_decrypt }}'
+        log_type: 'decryption'
+        header: 'Content-Type'
+        value: 'application/json'
+
+    - name: Add a param to the config log type
+      paloaltonetworks.panos.panos_http_profile_param:
+        provider: '{{ pa_provider }}'
+        http_profile: '{{ server_profile_name_decrypt }}'
+        log_type: 'decryption'
+        param: 'serial'
+        value: '$serial'

@@ -14,6 +14,7 @@ all:
     apiendpoints:
       hosts:
         aapcontroller:
+        paloalto:
         vcenter:
           ansible_python_interpreter: /usr/bin/python3
       vars:

@@ -30,24 +30,3 @@
               extra_vars:
                 dynatrace_problem_id: "{{ event.displayId }}"
                 impacted_entity: "{{ event.impactedEntities[0].name }}"
-        # - run_workflow_template:
-        #     name: "WF - Remediate Webservers"
-        #     organization: "Default"
-        #     job_args:
-        #       extra_vars:
-        #         dynatrace_problem_id: "{{ event.displayId }}"
-        #         impacted_entity: "{{ event.impactedEntities[0].name }}"
-    # - name: Problem payload Dynatrace for App Failure rate increase issue
-    #   condition: event.problemTitle contains "Failure rate increase"
-    #   action:
-    #     run_job_template:
-    #       name: "Remediate Application issue"
-    #       organization: "Default"
-    # - name: Update comments in Dynatrace
-    #   condition:
-    #     all:
-    #       - event.status == "OPEN"
-    #   action:
-    #     run_playbook:
-    #       name: dt-update-comments.yml
-
